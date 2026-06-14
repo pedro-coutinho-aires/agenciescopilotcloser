@@ -1,5 +1,5 @@
 #!/bin/bash
-# Start Lais Close MVP — backend + frontend in one command
+# Start Agencies Copilot Closer — backend + frontend in one command
 
 set -e
 
@@ -18,7 +18,7 @@ if grep -q "your-anthropic-api-key-here" backend/.env; then
   exit 1
 fi
 
-echo "Starting Lais Close..."
+echo "Starting Agencies Copilot Closer..."
 
 # Backend
 cd backend
@@ -46,7 +46,7 @@ cd ..
 
 echo ""
 echo "====================================="
-echo "  Lais Close running!"
+echo "  Agencies Copilot Closer running!"
 echo "  Frontend: http://localhost:3000"
 echo "  Backend:  http://localhost:8000"
 echo "  API docs: http://localhost:8000/docs"

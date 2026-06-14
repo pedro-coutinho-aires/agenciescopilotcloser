@@ -248,7 +248,7 @@ def _simple_lead_update(extracted: dict, lead_current: dict) -> dict:
 # Stage 3: generate_contextual_response
 # ---------------------------------------------------------------------------
 
-RESPONSE_SYSTEM_PROMPT = """Você é Lais, copiloto de fechamento de uma imobiliária.
+RESPONSE_SYSTEM_PROMPT = """Você é o Agencies Copilot Closer, copiloto de fechamento de uma imobiliária.
 Gere uma resposta natural e amigável para o corretor enviar ao lead via WhatsApp, confirmando o recebimento do documento e informando o próximo passo.
 
 A resposta deve:

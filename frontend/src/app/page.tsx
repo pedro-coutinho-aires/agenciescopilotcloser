@@ -112,7 +112,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Lais Close — right sidebar, toggled */}
+      {/* Agencies Copilot Closer — right sidebar, toggled */}
       {sidebarOpen && deal && (
         <div className="w-[420px] shrink-0 border-l border-border overflow-y-auto">
           <ClosePanel

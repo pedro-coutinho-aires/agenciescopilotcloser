@@ -503,7 +503,7 @@ Campos pendentes na minuta:
 {chr(10).join(f'- {f}' for f in active_contract.missing_fields)}"""
 
     system_prompt = (
-        "Você é o copiloto de fechamento da Lais. "
+        "Você é o Agencies Copilot Closer, copiloto de fechamento de locação imobiliária. "
         "Dado o resumo de um processo de fechamento de locação, "
         "adicione ao final uma seção 'Próxima ação sugerida:' com uma recomendação clara e objetiva. "
         "Responda com o resumo completo + a próxima ação."

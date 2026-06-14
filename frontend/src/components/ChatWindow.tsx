@@ -182,7 +182,7 @@ export function ChatWindow({
         attachments: [result.attachment],
       };
 
-      // Create a Lais response with the suggested message
+      // Create an Agencies Copilot response with the suggested message
       const laisMsg: ChatMessage = {
         id: `msg_${Date.now() + 1}`,
         sender: "lais",
@@ -267,7 +267,7 @@ export function ChatWindow({
               className="shrink-0 gap-1.5"
             >
               <FileCheck className="size-3.5" />
-              Lais Close
+              Copilot Closer
             </Button>
           )}
         </div>
@@ -321,7 +321,7 @@ export function ChatWindow({
               </div>
             </div>
             <Button size="sm" onClick={onOpenClosePanel} className="shrink-0">
-              Abrir Lais Close
+              Abrir Copilot Closer
             </Button>
           </div>
         </div>
@@ -428,7 +428,7 @@ function MessageBubble({
   const isLais = message.sender === "lais";
   const isOutgoing = isBroker || isLais;
 
-  const senderLabel = isLead ? leadName : isBroker ? "Voce" : "Lais";
+  const senderLabel = isLead ? leadName : isBroker ? "Voce" : "Agencies Copilot";
   const avatarVariant = isLead ? "lead" : isBroker ? "broker" : "lais";
 
   return (

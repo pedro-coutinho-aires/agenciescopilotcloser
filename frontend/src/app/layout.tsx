@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Lais Close — Copiloto de Fechamento",
-  description: "Copiloto de fechamento para locação imobiliária",
+  title: "Agencies Copilot Closer — Copiloto de Fechamento",
+  description: "Agencies Copilot Closer — copiloto de fechamento para locação imobiliária",
 };
 
 export default function RootLayout({

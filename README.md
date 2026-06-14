@@ -1,10 +1,10 @@
-# Lais Close — Copiloto de Fechamento para Locacao
+# Agencies Copilot Closer — Copiloto de Fechamento para Locacao
 
-> Quando o lead diz "quero fechar", o corretor ainda precisa sair do chat, procurar documentos, montar proposta, acionar administrativo e acompanhar pendencias manualmente. O **Lais Close** transforma esse momento em uma esteira guiada dentro da propria conversa.
+> Quando o lead diz "quero fechar", o corretor ainda precisa sair do chat, procurar documentos, montar proposta, acionar administrativo e acompanhar pendencias manualmente. O **Agencies Copilot Closer** transforma esse momento em uma esteira guiada dentro da propria conversa.
 
 ## O que e
 
-O Lais Close e um copiloto de fechamento para locacao imobiliaria. Ele funciona como um painel lateral acoplado ao chat com o lead e permite ao corretor:
+O Agencies Copilot Closer e um copiloto de fechamento para locacao imobiliaria. Ele funciona como um painel lateral acoplado ao chat com o lead e permite ao corretor:
 
 1. **Acompanhar documentos** — Checklist automatico, vinculacao de anexos do chat
 2. **Gerar propostas** — Formulario pre-preenchido + geracao com IA
@@ -181,7 +181,7 @@ Se o backend falhar ao iniciar, confira:
 
 1. A pagina carrega com um chat mostrando conversa com o lead
 2. O lead diz "Quero fechar" — aparece um banner azul
-3. Clique em **"Abrir Lais Close"** — o painel lateral abre
+3. Clique em **"Abrir Copilot Closer"** — o painel lateral abre
 4. **Aba Documentos**: Checklist com itens, vincule anexos do chat
 5. **Aba Proposta**: Preencha valores, clique "Gerar Proposta"
 6. **Aba Contrato**: Clique "Gerar Minuta" — campos pendentes em destaque

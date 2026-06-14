@@ -22,7 +22,7 @@ class ProposalPDF(FPDF):
         self.set_y(-15)
         self.set_font("Helvetica", "I", 8)
         self.set_text_color(150, 150, 150)
-        self.cell(0, 10, "Proposta gerada pelo Lais Close — sujeita a aprovacao", align="C")
+        self.cell(0, 10, "Proposta gerada pelo Agencies Copilot Closer — sujeita a aprovacao", align="C")
 
 
 class ContractPDF(FPDF):
@@ -31,7 +31,7 @@ class ContractPDF(FPDF):
         self.cell(0, 10, "CONTRATO DE LOCACAO RESIDENCIAL", align="C", new_x="LMARGIN", new_y="NEXT")
         self.set_font("Helvetica", "I", 9)
         self.set_text_color(120, 120, 120)
-        self.cell(0, 6, "Minuta Preliminar — Gerada automaticamente pelo Lais Close", align="C", new_x="LMARGIN", new_y="NEXT")
+        self.cell(0, 6, "Minuta Preliminar — Gerada automaticamente pelo Agencies Copilot Closer", align="C", new_x="LMARGIN", new_y="NEXT")
         self.set_text_color(0, 0, 0)
         self.ln(5)
 

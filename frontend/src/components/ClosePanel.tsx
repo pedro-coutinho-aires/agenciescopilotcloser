@@ -77,7 +77,7 @@ export function ClosePanel({
                 <FileCheck className="size-4" />
               </div>
               <h2 className="font-semibold text-lg tracking-tight">
-                Lais Close
+                Agencies Copilot Closer
               </h2>
             </div>
             <p className="mt-1.5 text-sm text-brand-foreground/80">
