@@ -17,100 +17,172 @@ O Lais Close e um copiloto de fechamento para locacao imobiliaria. Ele funciona 
 
 | Camada | Tecnologia |
 |--------|-----------|
-| Backend | Python 3.11+, FastAPI, Pydantic |
-| Frontend | Next.js 15, TypeScript, Tailwind CSS, shadcn/ui |
+| Backend | Python 3.11+, FastAPI, SQLAlchemy, PostgreSQL |
+| Frontend | Next.js 16, TypeScript, Tailwind CSS, shadcn/ui |
 | LLM | Anthropic Claude (primario), OpenAI (fallback opcional) |
 | Templates | Jinja2 (.j2) |
 
 ## Pre-requisitos
 
-- Python 3.11+
-- Node.js 20+
-- Chave API da Anthropic (obrigatoria)
-- Chave API da OpenAI (opcional, fallback)
+- **Docker** e **Docker Compose** (recomendado — sobe tudo com um comando)
+- **OU**, para rodar localmente sem Docker:
+  - Python 3.11+
+  - Node.js 20+
+  - PostgreSQL 16+ (porta `5432`)
+- Chave API da **Anthropic** (obrigatoria)
+- Chave API da **OpenAI** (opcional, fallback)
+- Chave **Clicksign** (opcional, assinatura digital)
 
-## Setup
+## Quick start (recomendado)
 
-### 1. Clone e entre no diretorio
-
-```bash
-cd re_copilot
-```
-
-### 2. Backend
+### 1. Clone o repositorio
 
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# ou: venv\Scripts\activate  # Windows
-pip install -r requirements.txt
+git clone git@github.com:pedro-coutinho-aires/laiscloser.git
+cd laiscloser
 ```
 
-### 3. Configurar variaveis de ambiente
+### 2. Configure as variaveis de ambiente
 
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
 ```
 
-Edite `.env` e adicione sua chave:
+Edite `backend/.env` e preencha pelo menos a chave da Anthropic:
 
 ```env
 ANTHROPIC_API_KEY=sk-ant-...
-OPENAI_API_KEY=sk-...  # opcional
+OPENAI_API_KEY=sk-...          # opcional
+CLICKSIGN_API_KEY=...          # opcional
+DATABASE_URL=postgresql+asyncpg://lais:lais@localhost:5432/lais_close
 ```
 
-### 4. Frontend
+> No Docker Compose, o `DATABASE_URL` do backend e sobrescrito automaticamente para apontar ao container Postgres.
+
+### 3. Suba o projeto
 
 ```bash
-cd ../frontend
-npm install
-```
-
-## Rodando
-
-### Opcao 1: Script (mais facil)
-
-```bash
-# Edite backend/.env com sua ANTHROPIC_API_KEY, depois:
-./start.sh
-```
-
-Um comando. Sobe backend + frontend juntos.
-
-### Opcao 2: Docker Compose
-
-```bash
-# Edite backend/.env com sua ANTHROPIC_API_KEY, depois:
 docker compose up --build
 ```
 
-### Opcao 3: Manual (dois terminais)
+Aguarde os tres servicos ficarem prontos: **postgres**, **backend** e **frontend**.
 
-**Terminal 1 — Backend (porta 8000):**
+### 4. Acesse
+
+| Servico | URL |
+|---------|-----|
+| App | http://localhost:3000 |
+| API | http://localhost:8000 |
+| Swagger | http://localhost:8000/docs |
+
+Para parar:
+
 ```bash
-cd backend
-source venv/bin/activate
-uvicorn main:app --reload --port 8000
+docker compose down
 ```
 
-**Terminal 2 — Frontend (porta 3000):**
+Para parar e apagar os dados do banco:
+
+```bash
+docker compose down -v
+```
+
+---
+
+## Rodando sem Docker
+
+Use esta opcao se preferir executar backend e frontend direto na maquina.
+
+### 1. Clone e configure o `.env`
+
+```bash
+git clone git@github.com:pedro-coutinho-aires/laiscloser.git
+cd laiscloser
+cp backend/.env.example backend/.env
+# Edite backend/.env e adicione ANTHROPIC_API_KEY
+```
+
+### 2. Suba o PostgreSQL
+
+O backend precisa de um Postgres acessivel em `localhost:5432` com usuario/senha `lais`/`lais` e banco `lais_close` (valores padrao do `.env.example`).
+
+**Opcao A — so o banco via Docker (mais simples):**
+
+```bash
+docker compose up postgres -d
+```
+
+**Opcao B — Postgres instalado localmente:**
+
+```bash
+createdb lais_close
+# ou ajuste DATABASE_URL em backend/.env
+```
+
+### 3. Escolha como subir backend + frontend
+
+#### Opcao A: Script unico (mais facil)
+
+Na raiz do projeto:
+
+```bash
+chmod +x start.sh   # apenas na primeira vez
+./start.sh
+```
+
+O script:
+- cria o venv Python e instala dependencias do backend
+- instala dependencias do frontend (`npm install`)
+- sobe backend na porta **8000** e frontend na porta **3000**
+
+Pressione `Ctrl+C` para encerrar os dois servicos.
+
+#### Opcao B: Dois terminais (controle manual)
+
+**Terminal 1 — Backend:**
+
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Terminal 2 — Frontend:**
+
 ```bash
 cd frontend
+npm install
 npm run dev
 ```
 
-### Acesse
+### 4. Acesse
 
 - App: **http://localhost:3000**
 - API docs: **http://localhost:8000/docs**
+
+---
+
+## Verificando se esta funcionando
+
+1. Abra http://localhost:3000 — a pagina deve carregar com o chat do lead.
+2. Abra http://localhost:8000/api/health — deve retornar `{"status":"ok"}`.
+3. Na primeira subida, o backend cria as tabelas e popula dados de demo automaticamente.
+
+Se o backend falhar ao iniciar, confira:
+- Postgres rodando e acessivel na porta `5432`
+- `ANTHROPIC_API_KEY` definida em `backend/.env`
+- Portas `3000` e `8000` livres
+
+---
 
 ## Demo Flow
 
 1. A pagina carrega com um chat mostrando conversa com o lead
 2. O lead diz "Quero fechar" — aparece um banner azul
 3. Clique em **"Abrir Lais Close"** — o painel lateral abre
-4. **Aba Documentos**: Checklist com 6 itens, vincule anexos do chat
+4. **Aba Documentos**: Checklist com itens, vincule anexos do chat
 5. **Aba Proposta**: Preencha valores, clique "Gerar Proposta"
 6. **Aba Contrato**: Clique "Gerar Minuta" — campos pendentes em destaque
 7. **Aba Resumo**: Clique "Gerar Resumo" — resumo completo com proxima acao
@@ -133,49 +205,57 @@ Templates disponiveis:
 ## Arquitetura
 
 ```
-re_copilot/
+laiscloser/
 ├── backend/
 │   ├── main.py                 # FastAPI app + CORS
 │   ├── models.py               # Modelos Pydantic
+│   ├── db/                     # SQLAlchemy + seed
 │   ├── routes/
 │   │   ├── deal.py             # CRUD de deals
 │   │   ├── generate.py         # Geracao de proposta/contrato/mensagem/resumo
+│   │   ├── documents.py        # Upload e analise de documentos
+│   │   ├── templates.py        # Templates customizados
 │   │   └── chat.py             # Simulacao de lead
 │   ├── services/
 │   │   ├── llm_service.py      # Claude + OpenAI fallback
 │   │   ├── template_engine.py  # Jinja2 + LLM enhancement
 │   │   └── document_classifier.py
 │   ├── templates/              # Templates Jinja2
-│   └── data/mock_data.py       # Dados mockados
+│   └── uploads/                # Arquivos enviados
 ├── frontend/
 │   ├── src/app/page.tsx        # Pagina principal
 │   ├── src/components/         # Componentes React
 │   ├── src/lib/api.ts          # Cliente API
 │   └── src/types/index.ts      # Tipos TypeScript
+├── docker-compose.yml          # Postgres + backend + frontend
+└── start.sh                    # Atalho para dev local
 ```
 
 ## API Reference
 
 | Metodo | Endpoint | Descricao |
 |--------|----------|-----------|
+| GET | `/api/health` | Health check |
 | GET | `/api/mock-data` | Dados mockados |
 | POST | `/api/deal` | Criar deal |
 | GET | `/api/deal/{id}` | Buscar deal |
 | PATCH | `/api/deal/{id}/link-attachment` | Vincular anexo |
 | PATCH | `/api/deal/{id}/update-doc-status` | Atualizar status doc |
+| POST | `/api/documents/process` | Processar documento |
 | POST | `/api/generate/proposal` | Gerar proposta |
 | POST | `/api/generate/contract` | Gerar minuta |
 | POST | `/api/generate/message` | Gerar mensagem |
 | POST | `/api/generate/summary` | Gerar resumo |
 | POST | `/api/chat/simulate` | Simular lead |
 
+Documentacao interativa completa: http://localhost:8000/docs
+
 ## Limitacoes (MVP)
 
 - Sem autenticacao
-- Sem banco de dados (estado em memoria, reseta ao reiniciar)
-- Sem upload real de arquivos (anexos mockados)
-- Sem integracao com WhatsApp/CRM
+- Sem integracao real com WhatsApp/CRM
 - Contratos sao minutas preliminares — sempre requerem revisao humana
+- Clicksign usa sandbox por padrao
 
 ---
 
