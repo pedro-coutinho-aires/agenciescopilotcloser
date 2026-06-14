@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { margin: 2.5cm; size: A4; }
+  body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a; }
+  h1 { text-align: center; font-size: 16pt; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+  h2 { font-size: 12pt; margin-top: 25px; margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+  .subtitle { text-align: center; font-size: 10pt; color: #666; margin-bottom: 30px; }
+  .field { font-weight: bold; }
+  .pending { color: #c0392b; font-weight: bold; background: #ffeaa7; padding: 1px 6px; }
+  .clause { margin-bottom: 12px; text-align: justify; }
+  .signature-block { margin-top: 60px; }
+  .signature-line { border-top: 1px solid #333; width: 250px; margin-top: 50px; padding-top: 5px; font-size: 10pt; }
+  .signatures { display: flex; justify-content: space-between; }
+  .warning { background: #fff3cd; border: 1px solid #ffc107; padding: 10px 15px; font-size: 9pt; color: #856404; margin-top: 30px; text-align: center; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  td { padding: 4px 8px; vertical-align: top; }
+  td.label { font-weight: bold; width: 200px; color: #555; }
+</style>
+</head>
+<body>
+
+<h1>Contrato de Locação Residencial</h1>
+<p class="subtitle">Minuta Preliminar — Gerada automaticamente pelo Lais Close</p>
+
+<h2>1. Partes</h2>
+<table>
+  <tr><td class="label">LOCADOR(A):</td><td>{{ owner_name }}</td></tr>
+  <tr><td class="label">LOCATÁRIO(A):</td><td>{{ lead_name }}</td></tr>
+  <tr><td class="label">CPF:</td><td>{% if lead_cpf %}{{ lead_cpf }}{% else %}<span class="pending">[PENDENTE]</span>{% endif %}</td></tr>
+  <tr><td class="label">RG:</td><td>{% if lead_rg %}{{ lead_rg }}{% else %}<span class="pending">[PENDENTE]</span>{% endif %}</td></tr>
+  <tr><td class="label">Estado Civil:</td><td>{% if lead_marital_status %}{{ lead_marital_status }}{% else %}<span class="pending">[PENDENTE]</span>{% endif %}</td></tr>
+  <tr><td class="label">Profissão:</td><td>{% if lead_occupation %}{{ lead_occupation }}{% else %}<span class="pending">[PENDENTE]</span>{% endif %}</td></tr>
+  <tr><td class="label">E-mail:</td><td>{% if lead_email %}{{ lead_email }}{% else %}<span class="pending">[PENDENTE]</span>{% endif %}</td></tr>
+  <tr><td class="label">Telefone:</td><td>{{ lead_phone }}</td></tr>
+</table>
+
+<h2>2. Imóvel</h2>
+<table>
+  <tr><td class="label">Endereço:</td><td>{{ property_address }}</td></tr>
+  <tr><td class="label">Bairro:</td><td>{{ property_neighborhood }}</td></tr>
+  <tr><td class="label">Cidade:</td><td>{{ property_city }}</td></tr>
+</table>
+
+<h2>3. Valores</h2>
+<table>
+  <tr><td class="label">Aluguel mensal:</td><td>R$ {{ "%.2f"|format(rent) }}</td></tr>
+  <tr><td class="label">Condomínio:</td><td>R$ {{ "%.2f"|format(condo_fee) }}</td></tr>
+  <tr><td class="label">IPTU:</td><td>R$ {{ "%.2f"|format(iptu) }}</td></tr>
+  <tr><td class="label">Total mensal:</td><td><strong>R$ {{ "%.2f"|format(rent + condo_fee + iptu) }}</strong></td></tr>
+</table>
+
+<h2>4. Prazo e Início</h2>
+<p class="clause">
+  O prazo da locação será de <span class="field">{{ contract_duration_months }} meses</span>,
+  com início em <span class="field">{% if move_in_date and move_in_date != '[PENDENTE]' %}{{ move_in_date }}{% else %}<span class="pending">[PENDENTE]</span>{% endif %}</span>.
+</p>
+
+<h2>5. Garantia</h2>
+<p class="clause">
+  A modalidade de garantia escolhida é <span class="field">{{ guarantee_type_label }}</span>.
+  {% if deposit_months %}O valor da caução corresponde a {{ deposit_months }} meses de aluguel (R$ {{ "%.2f"|format(rent * deposit_months) }}).{% endif %}
+</p>
+
+<h2>6. Obrigações do Locatário</h2>
+<p class="clause">6.1. Pagar pontualmente o aluguel e encargos até o dia 5 (cinco) de cada mês subsequente ao vencido.</p>
+<p class="clause">6.2. Manter o imóvel em bom estado de conservação, realizando os reparos necessários decorrentes do uso normal.</p>
+<p class="clause">6.3. Não sublocar, ceder ou emprestar o imóvel, no todo ou em parte, sem autorização prévia e por escrito do Locador.</p>
+<p class="clause">6.4. Comunicar ao Locador qualquer dano ou necessidade de reparo estrutural.</p>
+<p class="clause">6.5. Restituir o imóvel, ao final da locação, nas mesmas condições em que o recebeu, salvo desgaste natural.</p>
+
+<h2>7. Obrigações do Locador</h2>
+<p class="clause">7.1. Entregar o imóvel em condições de uso e habitabilidade.</p>
+<p class="clause">7.2. Garantir o uso pacífico do imóvel durante a vigência do contrato.</p>
+<p class="clause">7.3. Realizar os reparos estruturais necessários que não sejam de responsabilidade do Locatário.</p>
+
+<h2>8. Rescisão</h2>
+<p class="clause">8.1. Em caso de rescisão antecipada pelo Locatário, será devida multa proporcional ao período restante do contrato, conforme Lei nº 8.245/91.</p>
+
+<h2>9. Foro</h2>
+<p class="clause">Fica eleito o foro da comarca de {{ property_city }} para dirimir quaisquer dúvidas oriundas do presente contrato.</p>
+
+{% if missing_fields %}
+<h2>Campos Pendentes</h2>
+<ul>
+{% for field in missing_fields %}
+  <li style="color: #c0392b;">{{ field }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<div class="warning">
+  ⚠️ Esta é uma minuta preliminar gerada automaticamente a partir de template da imobiliária.
+  O documento deve ser revisado e aprovado por responsável humano antes de qualquer assinatura.
+</div>
+
+<div class="signature-block">
+  <table width="100%">
+    <tr>
+      <td width="50%">
+        <div class="signature-line">
+          {{ owner_name }}<br>
+          <small>LOCADOR(A)</small>
+        </div>
+      </td>
+      <td width="50%">
+        <div class="signature-line">
+          {{ lead_name }}<br>
+          <small>LOCATÁRIO(A)</small>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p style="text-align: center; font-size: 9pt; color: #999; margin-top: 40px;">
+  {{ property_city }}, {{ current_date }}
+</p>
+
+</body>
+</html>

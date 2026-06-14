@@ -1,0 +1,8 @@
+# Secrets — use .env.example as template
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

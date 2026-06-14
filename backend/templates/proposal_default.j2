@@ -1,0 +1,22 @@
+Proposta de Locação
+
+Locatário: {{ lead_name }}
+Imóvel: {{ property_title }}
+Endereço: {{ property_address }}, {{ property_neighborhood }}, {{ property_city }}
+
+Condições comerciais:
+- Aluguel: R$ {{ "%.2f"|format(rent) }}
+- Condomínio: R$ {{ "%.2f"|format(condo_fee) }}
+- IPTU: R$ {{ "%.2f"|format(iptu) }}
+- Total mensal estimado: R$ {{ "%.2f"|format(rent + condo_fee + iptu) }}
+- Garantia: {{ guarantee_type_label }}
+{% if deposit_months %}- Caução: {{ deposit_months }} meses{% endif %}
+- Data prevista de entrada: {{ move_in_date }}
+- Prazo contratual: {{ contract_duration_months }} meses
+
+{% if special_conditions %}Condições especiais:
+{{ special_conditions }}
+{% endif %}
+{% if pending_documents %}Documentos pendentes:
+{% for doc in pending_documents %}- {{ doc }}
+{% endfor %}{% endif %}

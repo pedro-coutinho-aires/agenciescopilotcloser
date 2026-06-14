@@ -1,0 +1,34 @@
+{% if purpose == "request_missing_documents" %}
+{{ lead_name }}, para avançarmos com a locação do imóvel na {{ property_address }}, ainda precisamos dos seguintes documentos:
+
+{% for doc in missing_documents %}- {{ doc }}
+{% endfor %}
+Assim que recebermos, conseguimos seguir para a próxima etapa. Qualquer dúvida, estou à disposição!
+{% elif purpose == "confirm_proposal" %}
+{{ lead_name }}, segue o resumo da proposta de locação:
+
+- Imóvel: {{ property_title }}
+- Aluguel: R$ {{ "%.2f"|format(rent) }}
+- Condomínio: R$ {{ "%.2f"|format(condo_fee) }}
+- IPTU: R$ {{ "%.2f"|format(iptu) }}
+- Garantia: {{ guarantee_type_label }}
+- Entrada prevista: {{ move_in_date }}
+
+Por favor, confirme se as condições estão de acordo para prosseguirmos.
+{% elif purpose == "explain_next_steps" %}
+{{ lead_name }}, os próximos passos para a locação são:
+
+1. Envio dos documentos pendentes
+2. Análise e aprovação da documentação
+3. Revisão da proposta comercial
+4. Elaboração e assinatura do contrato
+
+Estamos aqui para ajudar em cada etapa!
+{% elif purpose == "follow_up_pending" %}
+{{ lead_name }}, tudo bem? Passando para lembrar que ainda temos algumas pendências para avançar com a locação do imóvel na {{ property_address }}.
+
+{% if missing_documents %}Documentos pendentes:
+{% for doc in missing_documents %}- {{ doc }}
+{% endfor %}{% endif %}
+Consegue enviar até os próximos dias? Assim garantimos agilidade no processo!
+{% endif %}

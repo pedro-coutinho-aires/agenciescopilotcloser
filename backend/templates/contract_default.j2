@@ -1,0 +1,45 @@
+MINUTA PRELIMINAR DE CONTRATO DE LOCAÇÃO
+
+⚠️ Este documento é uma minuta preliminar gerada automaticamente. Deve ser revisado e aprovado por responsável humano antes de qualquer assinatura.
+
+──────────────────────────────────────
+
+LOCADOR(A): {{ owner_name | default("[PENDENTE]") }}
+LOCATÁRIO(A): {{ lead_name }}
+{% if lead_cpf %}CPF DO LOCATÁRIO: {{ lead_cpf }}{% else %}CPF DO LOCATÁRIO: [PENDENTE]{% endif %}
+
+IMÓVEL:
+{{ property_address }}, {{ property_neighborhood }}, {{ property_city }}
+
+VALORES:
+Aluguel mensal: R$ {{ "%.2f"|format(rent) }}
+Condomínio: R$ {{ "%.2f"|format(condo_fee) }}
+IPTU: R$ {{ "%.2f"|format(iptu) }}
+Total mensal: R$ {{ "%.2f"|format(rent + condo_fee + iptu) }}
+
+PRAZO:
+O prazo previsto da locação será de {{ contract_duration_months }} meses, com início em {{ move_in_date | default("[PENDENTE]") }}.
+
+GARANTIA:
+A modalidade de garantia escolhida é {{ guarantee_type_label }}.
+{% if deposit_months %}Valor da caução: {{ deposit_months }} meses de aluguel (R$ {{ "%.2f"|format(rent * deposit_months) }}).{% endif %}
+
+OBRIGAÇÕES DO LOCATÁRIO:
+1. Pagar pontualmente o aluguel e encargos até o dia 5 de cada mês.
+2. Manter o imóvel em bom estado de conservação.
+3. Não sublocar ou ceder o imóvel sem autorização prévia do locador.
+4. Comunicar ao locador qualquer dano ou necessidade de reparo.
+
+OBRIGAÇÕES DO LOCADOR:
+1. Entregar o imóvel em condições de uso.
+2. Garantir o uso pacífico do imóvel durante a vigência do contrato.
+3. Realizar reparos estruturais necessários.
+
+──────────────────────────────────────
+
+{% if missing_fields %}CAMPOS PENDENTES DE PREENCHIMENTO:
+{% for field in missing_fields %}- {{ field }}
+{% endfor %}{% endif %}
+
+OBSERVAÇÃO:
+Esta é uma minuta preliminar gerada automaticamente a partir de template da imobiliária. O documento deve ser revisado e aprovado por responsável humano antes de qualquer assinatura.

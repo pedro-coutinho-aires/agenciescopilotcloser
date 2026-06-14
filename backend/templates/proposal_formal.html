@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { margin: 2.5cm; size: A4; }
+  body { font-family: 'Helvetica', 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a; }
+  h1 { text-align: center; font-size: 16pt; margin-bottom: 5px; }
+  .subtitle { text-align: center; font-size: 10pt; color: #666; margin-bottom: 30px; }
+  .header-bar { background: #2c3e50; color: white; padding: 15px 20px; text-align: center; margin: -2.5cm -2.5cm 30px -2.5cm; }
+  .header-bar h1 { color: white; margin: 0; }
+  .header-bar p { color: #bdc3c7; margin: 5px 0 0 0; font-size: 10pt; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  td { padding: 6px 10px; vertical-align: top; border-bottom: 1px solid #eee; }
+  td.label { font-weight: bold; width: 200px; color: #555; background: #f8f9fa; }
+  td.value { font-size: 12pt; }
+  .total { font-size: 14pt; font-weight: bold; color: #2c3e50; }
+  .section-title { font-size: 12pt; font-weight: bold; color: #2c3e50; margin-top: 25px; margin-bottom: 10px; border-left: 3px solid #3498db; padding-left: 10px; }
+  .pending-list { background: #fff3cd; border: 1px solid #ffc107; padding: 12px 16px; margin-top: 20px; }
+  .pending-list li { color: #856404; margin: 4px 0; }
+  .footer { text-align: center; font-size: 9pt; color: #999; margin-top: 40px; border-top: 1px solid #eee; padding-top: 15px; }
+</style>
+</head>
+<body>
+
+<h1>Proposta de Locação</h1>
+<p class="subtitle">Ref.: {{ property_title }}</p>
+
+<p class="section-title">Locatário</p>
+<table>
+  <tr><td class="label">Nome:</td><td class="value">{{ lead_name }}</td></tr>
+  <tr><td class="label">Telefone:</td><td class="value">{{ lead_phone }}</td></tr>
+  {% if lead_email %}<tr><td class="label">E-mail:</td><td class="value">{{ lead_email }}</td></tr>{% endif %}
+</table>
+
+<p class="section-title">Imóvel</p>
+<table>
+  <tr><td class="label">Imóvel:</td><td class="value">{{ property_title }}</td></tr>
+  <tr><td class="label">Endereço:</td><td class="value">{{ property_address }}, {{ property_neighborhood }}, {{ property_city }}</td></tr>
+</table>
+
+<p class="section-title">Condições Comerciais</p>
+<table>
+  <tr><td class="label">Aluguel:</td><td class="value">R$ {{ "%.2f"|format(rent) }}</td></tr>
+  <tr><td class="label">Condomínio:</td><td class="value">R$ {{ "%.2f"|format(condo_fee) }}</td></tr>
+  <tr><td class="label">IPTU:</td><td class="value">R$ {{ "%.2f"|format(iptu) }}</td></tr>
+  <tr><td class="label">Total mensal:</td><td class="value total">R$ {{ "%.2f"|format(rent + condo_fee + iptu) }}</td></tr>
+  <tr><td class="label">Garantia:</td><td class="value">{{ guarantee_type_label }}</td></tr>
+  {% if deposit_months %}<tr><td class="label">Caução:</td><td class="value">{{ deposit_months }} meses (R$ {{ "%.2f"|format(rent * deposit_months) }})</td></tr>{% endif %}
+  <tr><td class="label">Entrada prevista:</td><td class="value">{{ move_in_date }}</td></tr>
+  <tr><td class="label">Prazo contratual:</td><td class="value">{{ contract_duration_months }} meses</td></tr>
+</table>
+
+{% if special_conditions %}
+<p class="section-title">Condições Especiais</p>
+<p>{{ special_conditions }}</p>
+{% endif %}
+
+{% if pending_documents %}
+<div class="pending-list">
+  <strong>Documentos pendentes para prosseguir:</strong>
+  <ul>
+  {% for doc in pending_documents %}
+    <li>{{ doc }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<div class="footer">
+  Proposta gerada em {{ current_date }} — Lais Close<br>
+  Esta proposta não constitui contrato e está sujeita à aprovação.
+</div>
+
+</body>
+</html>
